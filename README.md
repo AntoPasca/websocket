@@ -1,2 +1,2 @@
 # websocket
-simple project with websocker
+simple project with websocket
