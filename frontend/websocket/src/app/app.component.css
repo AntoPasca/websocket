@@ -182,13 +182,17 @@ button.accent {
     clear: both;
 }
 
+.message-content{
+   text-align: left;
+}
+
 #chat-page .event-message p {
     color: #777;
     font-size: 14px;
     word-wrap: break-word;
 }
 
-#chat-page .chat-message {
+#chat-message {
     padding-left: 68px;
     position: relative;
 }
