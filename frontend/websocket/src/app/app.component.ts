@@ -84,7 +84,7 @@ export class AppComponent {
       i = 31 * i + sender.charCodeAt(i);
     }
     var indexOfColour = Math.abs(i % this.color.length)
-    const styles = { 'color': this.color[indexOfColour] };
+    const styles = { 'background': this.color[indexOfColour] };
     return styles;
   }
 

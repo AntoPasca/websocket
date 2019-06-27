@@ -17,9 +17,12 @@
                 <h2>Spring WebSocket Chat Demo</h2>
             </div>
             <ul id="messageArea">
-                <div *ngFor="let messaggio of messaggi">
-                    <b [ngStyle]="applyStyle(messaggio.sender)">{{messaggio.sender}}</b> : {{messaggio.content}}
-                </div>
+                <li *ngFor="let messaggio of messaggi" class="chat-message">
+                    <i [ngStyle]="applyStyle(messaggio.sender)" class="circle">
+                        <span style="color: white">{{messaggio.sender | slice:0:1 }}</span>
+                    </i>
+                    <b>{{messaggio.sender}}</b>  <p>{{messaggio.content}}</p>
+                </li>
             </ul>
             <form id="messageForm" name="messageForm">
                 <div class="form-group">

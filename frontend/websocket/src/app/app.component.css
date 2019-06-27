@@ -193,7 +193,7 @@ button.accent {
     position: relative;
 }
 
-#chat-page .chat-message i {
+#circle {
     position: absolute;
     width: 42px;
     height: 42px;
@@ -203,11 +203,11 @@ button.accent {
     vertical-align: middle;
     font-size: 18px;
     line-height: 42px;
-    color: #fff;
     text-align: center;
     border-radius: 50%;
     font-style: normal;
     text-transform: uppercase;
+    color: green;
 }
 
 #chat-page .chat-message span {
