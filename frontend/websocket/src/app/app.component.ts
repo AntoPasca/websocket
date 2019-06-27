@@ -16,7 +16,7 @@ export class AppComponent {
   name : string;
   content : string;
   private color : string[] = ['#2196F3', '#32c787', '#00BCD4', '#ff5652','#ffc107', '#ff85af', '#FF9800', '#39bbb0']
-  public messaggi : ChatMessage[] = [];
+  messaggi : ChatMessage[] = [];
   public connected : boolean = false;
   public stompClient = null;
 
@@ -28,12 +28,15 @@ export class AppComponent {
                       // Stomp.over funziona solo con la versione 4.0.7 di @stomp/stompjs
     this.stompClient = Stomp.over(socket);
     let name = this.name;
-    const _this = this;
-    // //primo valore in input : header , secondo: callback , terzo: error
+    //necessaria poichè la variabile messaggi risulta undefined all'interno della connect
+    const mex = this.messaggi;
+
+    // argomenti della connect -> primo : header , secondo: callback , terzo: error
     this.stompClient.connect({}, () => {
       //Subscribe al topic public
       this.connected = true;
       this.stompClient.subscribe('/topic/public', function (payload) {
+
         let message = new ChatMessage();
         message = JSON.parse(payload.body);
 
@@ -42,7 +45,7 @@ export class AppComponent {
         } else if (message.type === 'LEAVE') {
           message.content = message.sender + ' left!';
         }
-        _this.messaggi.push(message);
+        mex.push(message);
       });
 
       //Invio Username
@@ -53,7 +56,9 @@ export class AppComponent {
 
   sendMessage(message: string){
 
+    //Controllo se esiste la connessione e il messaggio
     if(message && this.stompClient){
+
       //Creo l'oggetto messaggio
       let chatMessage = new ChatMessage();
       chatMessage.sender = this.name;
@@ -69,6 +74,7 @@ export class AppComponent {
     console.log('Errore nella comunicazione con WebSocket')
   }
 
+  //Funzione per ricavare i colori dei mittenti
   applyStyle(sender){
     let i = 0;
     for(i = 0 ; i < sender.length ; i++){
