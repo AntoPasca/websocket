@@ -1,0 +1,34 @@
+<div id="username-page">
+  <div class="username-page-container" *ngIf = "!connected">
+      <h1 class="title">Type your username</h1>
+      <form>
+          <div class="form-group">
+              <input type="text" name="text" id="name" placeholder="Username" autocomplete="off" class="form-control" [(ngModel)] = "name"/>
+          </div>
+          <div class="form-group">
+              <button type="submit" class="accent username-submit" (click)="connect()">Start Chatting</button>
+          </div>
+      </form>
+  </div>
+  <div id="chat-page" *ngIf = "connected">
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>Spring WebSocket Chat Demo</h2>
+        </div>
+        <ul id="messageArea">
+            <div *ngFor="let messaggio of messaggi">
+                <b [ngStyle]= "applyStyle(messaggio.sender)">{{messaggio.sender}}</b> : {{messaggio.content}}
+            </div>
+        </ul>
+        <form>
+            <div class="form-group">
+                <div class="input-group clearfix">
+                    <input type="text" name="text" id="message" placeholder="Type a message..." autocomplete="off" class="form-control" [(ngModel)] = "content"/>
+                    <button type="submit" class="primary" (click)="sendMessage(content)">Send</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
