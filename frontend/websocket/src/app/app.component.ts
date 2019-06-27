@@ -24,34 +24,36 @@ export class AppComponent {
   constructor() { }
 
   connect() {
-    const socket = new SockJS('http://localhost:8080/websocket/ws');
-
-    // Stomp.over funziona solo con la versione 4.0.7 di @stomp/stompjs
-    this.stompClient = Stomp.over(socket);
-    let name = this.name;
-    //necessaria poichè la variabile messaggi risulta undefined all'interno della connect
-    const mex = this.messaggi;
-
-    // argomenti della connect -> primo : header , secondo: callback , terzo: error
-    this.stompClient.connect({}, () => {
-      //Subscribe al topic public
-      this.connected = true;
-      this.stompClient.subscribe('/topic/public', function (payload) {
-
-        let message = new ChatMessage();
-        message = JSON.parse(payload.body);
-
-        if (message.type === 'JOIN') {
-          message.content = message.sender + ' joined!';
-        } else if (message.type === 'LEAVE') {
-          message.content = message.sender + ' left!';
-        }
-        mex.push(message);
-      });
-
-      //Invio Username
-      this.stompClient.send('/app/chat.addUser', {}, JSON.stringify({ sender: name, type: 'JOIN' }));
-    }, this.onError);
+    if(this.name){
+      const socket = new SockJS('http://localhost:8080/websocket/ws');
+  
+      // Stomp.over funziona solo con la versione 4.0.7 di @stomp/stompjs
+      this.stompClient = Stomp.over(socket);
+      let name = this.name;
+      //necessaria poichè la variabile messaggi risulta undefined all'interno della connect
+      const mex = this.messaggi;
+  
+      // argomenti della connect -> primo : header , secondo: callback , terzo: error
+      this.stompClient.connect({}, () => {
+        //Subscribe al topic public
+        this.connected = true;
+        this.stompClient.subscribe('/topic/public', function (payload) {
+  
+          let message = new ChatMessage();
+          message = JSON.parse(payload.body);
+  
+          if (message.type === 'JOIN') {
+            message.content = message.sender + ' joined!';
+          } else if (message.type === 'LEAVE') {
+            message.content = message.sender + ' left!';
+          }
+          mex.push(message);
+        });
+  
+        //Invio Username
+        this.stompClient.send('/app/chat.addUser', {}, JSON.stringify({ sender: name, type: 'JOIN' }));
+      }, this.onError);
+    }
   }
 
 
