@@ -13,19 +13,20 @@ import * as SockJS from 'sockjs-client';
 
 export class AppComponent {
   title = 'app';
-  name : string;
-  content : string;
-  private color : string[] = ['#2196F3', '#32c787', '#00BCD4', '#ff5652','#ffc107', '#ff85af', '#FF9800', '#39bbb0']
-  messaggi : ChatMessage[] = [];
-  public connected : boolean = false;
+  name: string;
+  content: string;
+  private color: string[] = ['#2196F3', '#32c787', '#00BCD4', '#ff5652', '#ffc107', '#ff85af', '#FF9800', '#39bbb0']
+  messaggi: ChatMessage[] = [];
+  public connected: boolean = false;
   public stompClient = null;
 
-  
-  constructor() {}
 
-  connect() { 
+  constructor() { }
+
+  connect() {
     const socket = new SockJS('http://localhost:8080/websocket/ws');
-                      // Stomp.over funziona solo con la versione 4.0.7 di @stomp/stompjs
+
+    // Stomp.over funziona solo con la versione 4.0.7 di @stomp/stompjs
     this.stompClient = Stomp.over(socket);
     let name = this.name;
     //necessaria poichè la variabile messaggi risulta undefined all'interno della connect
@@ -54,10 +55,10 @@ export class AppComponent {
   }
 
 
-  sendMessage(message: string){
+  sendMessage(message: string) {
 
     //Controllo se esiste la connessione e il messaggio
-    if(message && this.stompClient){
+    if (message && this.stompClient) {
 
       //Creo l'oggetto messaggio
       let chatMessage = new ChatMessage();
@@ -66,22 +67,22 @@ export class AppComponent {
       chatMessage.type = 'CHAT';
 
       this.stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
-      this.content = ''; 
+      this.content = '';
     }
   }
 
-  onError(){
+  onError() {
     console.log('Errore nella comunicazione con WebSocket')
   }
 
   //Funzione per ricavare i colori dei mittenti
-  applyStyle(sender){
+  applyStyle(sender) {
     let i = 0;
-    for(i = 0 ; i < sender.length ; i++){
+    for (i = 0; i < sender.length; i++) {
       i = 31 * i + sender.charCodeAt(i);
     }
     var indexOfColour = Math.abs(i % this.color.length)
-    const styles = {'color' : this.color[indexOfColour]};
+    const styles = { 'color': this.color[indexOfColour] };
     return styles;
   }
 
