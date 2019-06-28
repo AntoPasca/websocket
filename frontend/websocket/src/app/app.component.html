@@ -15,8 +15,11 @@
         <div class="chat-container">
             <div class="chat-header">
                 <h2>Spring WebSocket Chat Demo</h2>
+                <div>
+                    connected as <b>{{messaggi[0].sender}}</b>
+                </div>
             </div>
-            <ul id="messageArea">
+            <ul #scroll class="messageArea">
                 <li *ngFor="let messaggio of messaggi">
                     <div *ngIf="messaggio.type == 'CHAT'" class="chat-message">
                         <i [ngStyle]="applyStyle(messaggio.sender)" class="circle">

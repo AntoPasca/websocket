@@ -1,5 +1,5 @@
 import { ChatMessage } from './ChatMessage';
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 
 import * as Stomp from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
@@ -19,9 +19,14 @@ export class AppComponent {
   messaggi: ChatMessage[] = [];
   public connected: boolean = false;
   public stompClient = null;
+  @ViewChild('scroll') private myScrollContainer: ElementRef;
 
 
   constructor() { }
+
+  ngAfterViewChecked() {        
+    this.scrollToBottom();        
+  } 
 
   connect() {
     if(this.name){
@@ -87,5 +92,11 @@ export class AppComponent {
     const styles = { 'background': this.color[indexOfColour] };
     return styles;
   }
+
+  scrollToBottom(): void {
+        try {
+            this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+        } catch(err) { }                 
+    }
 
 }
