@@ -1,16 +1,24 @@
 package it.apasca.websocket.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import it.apasca.websocket.model.ChatMessage;
+import it.apasca.websocket.service.ChatMessageService;
 
-@Controller
+@RestController
 public class ChatController {
 
+	@Autowired
+	private ChatMessageService chatMessageService;
+	
 	/*
 	 * Tutti i messaggi mandati dai client al path /app verranno reindirizzati ai metodi handling annotati 
 	 * con MessageMapping
@@ -24,6 +32,7 @@ public class ChatController {
     @MessageMapping("/chat.sendMessage")
     @SendTo("/topic/public")
     public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
+    	chatMessageService.save(chatMessage);
         return chatMessage;
     }
 
@@ -35,5 +44,4 @@ public class ChatController {
         headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
         return chatMessage;
     }
-
 }
