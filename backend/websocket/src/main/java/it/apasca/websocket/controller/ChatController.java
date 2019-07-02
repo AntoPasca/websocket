@@ -5,12 +5,10 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.apasca.websocket.model.ChatMessage;
+import it.apasca.websocket.model.User;
 import it.apasca.websocket.service.ChatMessageService;
 
 @RestController
@@ -39,7 +37,10 @@ public class ChatController {
     @MessageMapping("/chat.addUser")
     @SendTo("/topic/public")
     public ChatMessage addUser(@Payload ChatMessage chatMessage, 
-                               SimpMessageHeaderAccessor headerAccessor) {
+                               SimpMessageHeaderAccessor headerAccessor) throws Exception {
+    	User user = new User();
+    	user.setName(chatMessage.getSender());
+    	chatMessageService.addUser(user);
         // Add username in web socket session
         headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
         return chatMessage;

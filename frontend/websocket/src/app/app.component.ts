@@ -30,7 +30,7 @@ export class AppComponent {
 
   connect() {
     if(this.name){
-      const socket = new SockJS('http://localhost:8080/websocket/ws');
+      const socket = new SockJS('http://websocket-chat-websocketchat.apps.us-west-2.online-starter.openshift.com/websocket/ws');
   
       // Stomp.over funziona solo con la versione 4.0.7 di @stomp/stompjs
       this.stompClient = Stomp.over(socket);
